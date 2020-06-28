@@ -1,6 +1,7 @@
 'use strict';
 
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
   entry: {
@@ -11,7 +12,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name]-bundle.js',
   },
-  mode: 'production',
+  mode: 'development',
   module: {
     rules: [
       {
@@ -49,5 +50,12 @@ module.exports = {
         use: 'file-loader'
       }
     ]
-  }
+  },
+  plugins: [
+    // new webpack.HotModuleReplacementPlugin() // 当devServer的hot开启为true时，这一行可以不用加
+  ],
+  devServer: {
+    contentBase: './dist',
+    hot: true,
+  },
 }
