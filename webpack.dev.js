@@ -2,6 +2,7 @@
 
 const path = require('path');
 const webpack = require('webpack');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -53,6 +54,7 @@ module.exports = {
   },
   plugins: [
     // new webpack.HotModuleReplacementPlugin() // 当devServer的hot开启为true时，这一行可以不用加
+    new CleanWebpackPlugin(),
   ],
   devServer: {
     contentBase: './dist',
