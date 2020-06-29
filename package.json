@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack",
+    "build": "webpack --config webpack.prod.js",
     "watch": "webpack --watch",
-    "dev": "webpack-dev-server --open"
+    "dev": "webpack-dev-server --config webpack.dev.js --open"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +21,7 @@
     "file-loader": "^6.0.0",
     "less": "^3.11.3",
     "less-loader": "^6.1.2",
+    "mini-css-extract-plugin": "^0.9.0",
     "style-loader": "^1.2.1",
     "url-loader": "^4.1.0",
     "webpack": "^4.43.0",

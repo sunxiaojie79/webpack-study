@@ -1,2 +1,5 @@
 # dependencies
 /node_modules
+
+# production  打包文件
+// /dist
