@@ -1,6 +1,7 @@
 'use strict';
 const glob = require('glob');
 const path = require('path');
+const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -46,7 +47,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name]_[chunkhash:8].js',
   },
-  mode: 'production',
+  mode: 'none',
   module: {
     rules: [
       {
@@ -121,6 +122,7 @@ module.exports = {
       cssProcessor: require('cssnano')
     }),
     new CleanWebpackPlugin(),
+    new webpack.optimize.ModuleConcatenationPlugin() //scope hoisting
     // new HtmlWebpackExternalsPlugin({ // cdn
     //   externals: [
     //     {
