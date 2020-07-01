@@ -46,7 +46,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name]_[chunkhash:8].js',
   },
-  mode: 'none',
+  mode: 'production',
   module: {
     rules: [
       {
@@ -121,7 +121,7 @@ module.exports = {
       cssProcessor: require('cssnano')
     }),
     new CleanWebpackPlugin(),
-    // new HtmlWebpackExternalsPlugin({
+    // new HtmlWebpackExternalsPlugin({ // cdn
     //   externals: [
     //     {
     //       module: 'react',
@@ -143,7 +143,7 @@ module.exports = {
   optimization: {
     splitChunks: {
       cacheGroups: {
-        reactBase: {
+        reactBase: { // react相关单独打包
           test: /(react|react-dom)/,
           name: 'vendors',
           chunks: 'all',
