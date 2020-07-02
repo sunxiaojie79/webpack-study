@@ -141,7 +141,15 @@ module.exports = {
     //     `search.html` // 这里要指定html 不然还是会多次注入
     //   ]
     // })
-    new FriendlyErrorsWebpackPlugin()
+    new FriendlyErrorsWebpackPlugin(),
+    function () {
+      this.hooks.done.tap('done', (stats) => {
+        if (stats.compilation.errors && stats.compilation.errors.length && process.argv.indexOf('--watch') == -1) {
+          console.log('build error');
+          process.exit(1);
+        }
+      })
+    }  
   ].concat(htmlWebpackPlugins),
   devtool: 'inline-source-map',
   optimization: {
