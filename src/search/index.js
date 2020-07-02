@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDom from 'react-dom';
+import largeNumber from 'large-number-666';
 import './search.less';
 import logo from './images/webpack-logo.png';
 import '../../common';
@@ -24,6 +25,7 @@ class Search extends React.Component {
   render() {
     const { Text } = this.state;
     // const funcA = a()
+    const addResult = largeNumber('999', '1')
     return (
       <div className="search-text">
         {
@@ -31,6 +33,7 @@ class Search extends React.Component {
         }
         search text
         {/* {funcA} */}
+        {addResult}
         <img src={logo} alt="123" onClick={this.loadComponent.bind(this)} />
       </div>
     );
