@@ -7,6 +7,7 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 
 const setMPA = () => {
   const entry = {};
@@ -122,7 +123,7 @@ module.exports = {
       cssProcessor: require('cssnano')
     }),
     new CleanWebpackPlugin(),
-    new webpack.optimize.ModuleConcatenationPlugin() //scope hoisting
+    // new webpack.optimize.ModuleConcatenationPlugin(), //scope hoisting
     // new HtmlWebpackExternalsPlugin({ // cdn
     //   externals: [
     //     {
@@ -140,6 +141,7 @@ module.exports = {
     //     `search.html` // 这里要指定html 不然还是会多次注入
     //   ]
     // })
+    new FriendlyErrorsWebpackPlugin()
   ].concat(htmlWebpackPlugins),
   devtool: 'inline-source-map',
   optimization: {
@@ -158,5 +160,6 @@ module.exports = {
         }
       }
     }
-  }
+  },
+  stats: 'errors-only'
 }
