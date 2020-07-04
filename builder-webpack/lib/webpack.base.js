@@ -3,13 +3,14 @@ const path = require('path');
 const autoprefixer = require('autoprefixer');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 
+const projectRoot = process.cwd();
 const setMPA = () => {
   const entry = {};
   const htmlWebpackPlugins = [];
-  const entryFiles = glob.sync(path.join(__dirname, './src/*/index.js'));
+  const entryFiles = glob.sync(path.join(projectRoot, './src/*/index.js'));
   Object.keys(entryFiles).map((key) => {
     const entryFile = entryFiles[key];
     const match = entryFile.match(/src\/(.*)\/index\.js/);
@@ -17,7 +18,7 @@ const setMPA = () => {
     entry[pageName] = entryFile;
     return htmlWebpackPlugins.push(
       new HtmlWebpackPlugin({
-        template: path.join(__dirname, `src/${pageName}/index.html`),
+        template: path.join(projectRoot, `src/${pageName}/index.html`),
         filename: `${pageName}.html`,
         chunks: [`${pageName}`],
         inject: true,
@@ -41,6 +42,10 @@ const { entry, htmlWebpackPlugins } = setMPA();
 
 module.exports = {
   entry,
+  output: {
+    path: path.join(projectRoot, 'dist'),
+    filename: '[name]_[chunkhash:8].js',
+  },
   module: {
     rules: [
       {
