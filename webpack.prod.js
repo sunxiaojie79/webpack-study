@@ -9,6 +9,7 @@ const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const SpeedMeasureWebpackPlugin = require('speed-measure-webpack-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const smp = new SpeedMeasureWebpackPlugin();
 
@@ -137,23 +138,23 @@ module.exports = smp.wrap({
     }),
     new CleanWebpackPlugin(),
     // new webpack.optimize.ModuleConcatenationPlugin(), //scope hoisting
-    // new HtmlWebpackExternalsPlugin({ // cdn
-    //   externals: [
-    //     {
-    //       module: 'react',
-    //       entry: 'https://cdn.bootcdn.net/ajax/libs/react/16.13.1/umd/react.production.min.js',
-    //       global: 'React',
-    //     },
-    //     {
-    //       module: 'react-dom',
-    //       entry: 'https://cdn.bootcdn.net/ajax/libs/react-dom/16.13.1/umd/react-dom.production.min.js',
-    //       global: 'ReactDOM',
-    //     },
-    //   ],
-    //   files: [
-    //     `search.html` // 这里要指定html 不然还是会多次注入
-    //   ]
-    // })
+    new HtmlWebpackExternalsPlugin({ // cdn
+      externals: [
+        {
+          module: 'react',
+          entry: 'https://cdn.bootcdn.net/ajax/libs/react/16.13.1/umd/react.production.min.js',
+          global: 'React',
+        },
+        {
+          module: 'react-dom',
+          entry: 'https://cdn.bootcdn.net/ajax/libs/react-dom/16.13.1/umd/react-dom.production.min.js',
+          global: 'ReactDOM',
+        },
+      ],
+      files: [
+        `search.html` // 这里要指定html 不然还是会多次注入
+      ]
+    }),
     new FriendlyErrorsWebpackPlugin(),
     function () {
       this.hooks.done.tap('done', (stats) => {
@@ -162,17 +163,18 @@ module.exports = smp.wrap({
           process.exit(1);
         }
       })
-    }
+    },
+    new BundleAnalyzerPlugin(),
   ].concat(htmlWebpackPlugins),
   devtool: 'inline-source-map',
   optimization: {
     splitChunks: {
       cacheGroups: {
-        reactBase: { // react相关单独打包
-          test: /(react|react-dom)/,
-          name: 'vendors',
-          chunks: 'all',
-        },
+        // reactBase: { // react相关单独打包
+        //   test: /(react|react-dom)/,
+        //   name: 'vendors',
+        //   chunks: 'all',
+        // },
         commons: {
           minSize: 0,
           name: 'commons',
