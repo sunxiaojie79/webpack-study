@@ -4,6 +4,7 @@ import largeNumber from 'large-number-666';
 import './search.less';
 import logo from './images/webpack-logo.png';
 import '../../common';
+import 'babel-polyfill';
 // import { a } from './tree-shaking'
 class Search extends React.Component {
   constructor() {

@@ -10,6 +10,8 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const SpeedMeasureWebpackPlugin = require('speed-measure-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const HappyPack = require('happypack');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const smp = new SpeedMeasureWebpackPlugin();
 
@@ -55,19 +57,29 @@ module.exports = smp.wrap({
   mode: 'none',
   module: {
     rules: [
+      // {
+      //   enforce: 'pre',
+      //   test: /\.js$/,
+      //   exclude: /node_modules/,
+      //   loader: 'eslint-loader',
+      //   options: {
+      //     cache: true,
+      //   },
+      // },
       {
-        enforce: 'pre',
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'eslint-loader',
-        options: {
-          cache: true,
-        },
-      },
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader',
+        // loader: 'babel-loader',
+        use: [
+          // {
+          //   loader: 'thread-loader',
+          //   options: {
+          //       workers: 3
+          //   }
+          // },
+          'babel-loader'
+          // 'happypack/loader'
+        ]
       },
       {
         test: /.css$/,
@@ -165,6 +177,10 @@ module.exports = smp.wrap({
       })
     },
     new BundleAnalyzerPlugin(),
+    // new HappyPack({
+    //   // 3) re-add the loaders you replaced above in #1:
+    //   loaders: ['babel-loader']
+    // }),
   ].concat(htmlWebpackPlugins),
   devtool: 'inline-source-map',
   optimization: {
@@ -182,7 +198,12 @@ module.exports = smp.wrap({
           minChunks: 2
         }
       }
-    }
+    },
+    minimizer: [
+      new TerserPlugin({
+        parallel: true,
+      })
+    ]
   },
   stats: 'errors-only'
 });
