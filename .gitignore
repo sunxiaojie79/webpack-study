@@ -3,3 +3,5 @@
 
 # production  打包文件
 /dist
+
+/stats.json
