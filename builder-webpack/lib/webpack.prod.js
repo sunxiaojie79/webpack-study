@@ -7,9 +7,9 @@ const baseConfig = require('./webpack.base');
 const prodConfig = {
   mode: 'production',
   plugins: [
-    new OptimizeCssAssetsPlugin({
+    new OptimizeCSSAssetsPlugin({
       assetNameRegExp: /\.css$/g,
-      cssProcessor: require('cssnano')
+      cssProcessor: cssnano,
     }),
     new HtmlWebpackExternalsPlugin({ // cdn
       externals: [
@@ -27,7 +27,7 @@ const prodConfig = {
       // files: [
       //   `search.html` // 这里要指定html 不然还是会多次注入
       // ]
-    })
+    }),
   ],
   optimization: {
     splitChunks: {
@@ -41,10 +41,10 @@ const prodConfig = {
           minSize: 0,
           name: 'commons',
           chunks: 'all',
-          minChunks: 2
-        }
-      }
-    }
+          minChunks: 2,
+        },
+      },
+    },
   },
 };
 
