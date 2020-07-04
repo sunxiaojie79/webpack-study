@@ -2,3 +2,4 @@
 /logs
 /test/smoke/template/dist
 /test/smoke/template/node_modules
+/.nyc_output
