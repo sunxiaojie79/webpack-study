@@ -7,7 +7,10 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+const SpeedMeasureWebpackPlugin = require('speed-measure-webpack-plugin');
+
+const smp = new SpeedMeasureWebpackPlugin();
 
 const setMPA = () => {
   const entry = {};
@@ -42,7 +45,7 @@ const setMPA = () => {
 
 const { entry, htmlWebpackPlugins } = setMPA();
 
-module.exports = {
+module.exports = smp.wrap({
   entry,
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -52,8 +55,18 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /.js$/,
-        use: ['babel-loader', 'eslint-loader']
+        enforce: 'pre',
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'eslint-loader',
+        options: {
+          cache: true,
+        },
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
       },
       {
         test: /.css$/,
@@ -149,7 +162,7 @@ module.exports = {
           process.exit(1);
         }
       })
-    }  
+    }
   ].concat(htmlWebpackPlugins),
   devtool: 'inline-source-map',
   optimization: {
@@ -170,4 +183,4 @@ module.exports = {
     }
   },
   stats: 'errors-only'
-}
+});
