@@ -54,6 +54,6 @@
     "webpack-merge": "^4.2.1",
     "rimraf": "^2.7.1",
     "glob-all": "^3.1.0",
-    "mocha": "^6.2.3"
+    "mocha": "^10.2.0"
   }
 }
